@@ -26,22 +26,32 @@ def main():
     for country in countries_of_interest:
         # Country name and cluster belonging over the years
         correlation_list += "\n{}\nClusters 1960-2014: {}\n".format(country, str(changed_countries[changed_countries.index == country].values[0]).replace('\n',''))
-        gdp_per_capita = dataset.get_country_by_index(gdp_per_capita_all_countries, country)
-        gdp_per_capita = gdp_per_capita.values.reshape(-1,)
 
         # Iterate over all variables in the dataset for the current country and process those with complete timeseries
         for code in data['Indicator Code'].unique():
+            gdp_per_capita = dataset.get_country_by_index(gdp_per_capita_all_countries, country)
+            gdp_per_capita_reshaped = gdp_per_capita.values.reshape(-1, )
+
             current = dataset.get_indicator_code(data, code)  # Filter the data for the indicator
             indicator_name = current['Indicator Name'][current.index[0]]  # Store the indicator name
             current = dataset.clean_matrix_incomplete(current)
             current = dataset.get_country_by_index(current, country)  # Keep data only for the current country
-            current = current.values.reshape(-1, )
-            if len(current) == len(gdp_per_capita):
-                correlation, p_value = pearsonr(current, gdp_per_capita)  # Calcultae Pearson's correlation between variable and GDP per capita
+            current_reshaped = current.values.reshape(-1, )
+
+            if len(current_reshaped) != len(gdp_per_capita_reshaped):  # Remove years that are missing from the indicator from GDP as well
+                for year_int in range(1960,2015):
+                    year = str(year_int)
+                    if year not in current.keys():
+                        gdp_per_capita.pop(year) if year in gdp_per_capita.keys() else None
+                gdp_per_capita_reshaped = gdp_per_capita.values.reshape(-1, )
+                current_reshaped = current.values.reshape(-1, )
+
+            if len(current_reshaped) == len(gdp_per_capita_reshaped):
+                correlation, p_value = pearsonr(current_reshaped, gdp_per_capita_reshaped)  # Calcultae Pearson's correlation between variable and GDP per capita
                 if not pd.isna(correlation):  # If the correlation is a number (i.e. no errors took place), add it to the output
                     sig = '*' if p_value < 0.05 else ''
                     p_value = "{:8.2f}".format(p_value) if p_value >= 0.0001 else '< 0.0001'
-                    correlation_list += "\t{:70.67}Correlation: {:5.2f}\t\t p-value: {:11} {}\n".format(indicator_name, correlation, p_value, sig)
+                    correlation_list += "\t{:70.67}Correlation: {:5.2f}\t\t p-value: {:11}{}\t\tn={}\n".format(indicator_name, correlation, p_value, sig, len(current_reshaped))
 
     print(correlation_list)  # Print the resulting list to the console (TODO: create a heatmap with pyplot)
 
