@@ -6,10 +6,12 @@ def get_indicator_code(data, indicator_code):
     return to_return
 
 
+# Function get the data for a given country when the country names are in a column in the data
 def get_country(data, country):
     return data.loc[data['Country Name'] == country]
 
 
+# Function to get the data for a given country when country names are indices
 def get_country_by_index(data, country):
     return data[data.index == country]
 
