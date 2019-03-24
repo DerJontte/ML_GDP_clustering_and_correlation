@@ -1,6 +1,6 @@
 # File to make it easier to find the place to start the execution ;)
-import find_changed_indicators
+import calculate_correlations
 
 
 if __name__ == "__main__":
-    find_changed_indicators.main()
+    calculate_correlations.main()
