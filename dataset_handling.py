@@ -1,3 +1,10 @@
+# Methods to perform various functions on the World Bank dataset on climate change.
+#
+# (c) 2019 John Nordqvist
+# Licence: MIT
+#
+
+
 # Function to pick out one single indicator code into an own matrix
 def get_indicator_code(data, indicator_code):
     print('Filtering for indicator code {}... '.format(indicator_code), end='')

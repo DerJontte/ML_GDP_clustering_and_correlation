@@ -1,3 +1,8 @@
+# Script to perform k-means clustering on a dataset (in practice hardcoded to work with the World Bank dataset on climate change).
+#
+# (c) 2019 John Nordqvist
+# Licence: MIT
+#
 # The sorting of clusters from lowest to highest income is taken from the stackoverflow-topic at the address
 # https://stackoverflow.com/questions/44888415/how-to-set-k-means-clustering-labels-from-highest-to-lowest-with-python
 

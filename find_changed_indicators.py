@@ -1,3 +1,9 @@
+# Script to calculate and visualize correlations between GDP or cluster membership with other indicators for a given group of countries.
+#
+# (c) 2019 John Nordqvist
+# Licence: MIT
+#
+
 import pandas as pd
 import dataset_handling as dataset
 import kmeans_by_gdp as clustering

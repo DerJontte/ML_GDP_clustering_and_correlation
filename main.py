@@ -1,4 +1,4 @@
-# File to make it easier to find the place to start execution ;)
+# File to make it easier to find the place to start the execution ;)
 import find_changed_indicators
 
 
